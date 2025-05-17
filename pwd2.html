@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Password Strength Checker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      transition: 0.3s ease;
+    }
+
+    input[type="password"]:focus {
+      border-color: #6a11cb;
+      outline: none;
+      box-shadow: 0 0 5px rgba(106, 17, 203, 0.4);
+    }
+
+    .meter {
+      height: 12px;
+      background-color: #eee;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 0;
+      transition: width 0.4s ease;
+    }
+
+    .weak { background-color: #e74c3c; }
+    .medium { background-color: #f39c12; }
+    .strong { background-color: #2ecc71; }
+
+    #strength-text {
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Password Strength Checker</h2>
+    <input type="password" id="password" placeholder="Enter password" oninput="checkStrength(this.value)">
+    <div class="meter"><div id="meter-fill" class="meter-fill"></div></div>
+    <div id="strength-text"></div>
+  </div>
+
+  <script>
+    function checkStrength(password) {
+      const fill = document.getElementById('meter-fill');
+      const text = document.getElementById('strength-text');
+      let strength = 0;
+
+      if (password.length >= 8) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+      fill.className = 'meter-fill';
+      text.className = '';
+      if (!password) {
+        fill.style.width = '0';
+        text.textContent = '';
+      } else if (strength <= 1) {
+        fill.style.width = '33%';
+        fill.classList.add('weak');
+        text.textContent = 'Weak';
+        text.style.color = '#e74c3c';
+      } else if (strength === 2 || strength === 3) {
+        fill.style.width = '66%';
+        fill.classList.add('medium');
+        text.textContent = 'Medium';
+        text.style.color = '#f39c12';
+      } else {
+        fill.style.width = '100%';
+        fill.classList.add('strong');
+        text.textContent = 'Strong';
+        text.style.color = '#2ecc71';
+      }
+    }
+  </script>
+</body>
+</html>
